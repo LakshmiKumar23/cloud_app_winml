@@ -56,7 +56,7 @@ private:
     int dimH;
     int dimW;
     QString modelFile1;
-    QString modelFile2;
+    //QString modelFile2;
     int reverseInputChannelOrder;
     float preprocessMpy[3];
     float preprocessAdd[3];
@@ -72,7 +72,7 @@ public:
             bool enableServer,
             QString serverHost, int serverPort,
             int c, int h, int w,
-            QString modelFile1, QString modelFile2,
+            QString modelFile1,
             int reverseInputChannelOrder,
             float preprocessMpy[3],
             float preprocessAdd[3],
@@ -108,7 +108,7 @@ private:
     // status
     QLabel * labelStatus;
     QLineEdit * editModelFile1UploadProgress;
-    QLineEdit * editModelFile2UploadProgress;
+    //QLineEdit * editModelFile2UploadProgress;
     QLineEdit * editCompilerProgress;
     QLineEdit * editDimC;
     QLineEdit * editDimH;

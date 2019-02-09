@@ -259,7 +259,7 @@ inference_control::inference_control(int operationMode_, QWidget *parent)
     connect(editDimH, SIGNAL(textChanged(const QString &)), this, SLOT(onChangeDimH(const QString &)));
     connect(editDimW, SIGNAL(textChanged(const QString &)), this, SLOT(onChangeDimW(const QString &)));
     connect(editModelFile1, SIGNAL(textChanged(const QString &)), this, SLOT(onChangeModelFile1(const QString &)));
-    connect(editModelFile2, SIGNAL(textChanged(const QString &)), this, SLOT(onChangeModelFile2(const QString &)));
+    //connect(editModelFile2, SIGNAL(textChanged(const QString &)), this, SLOT(onChangeModelFile2(const QString &)));
     connect(comboInvertInputChannels, SIGNAL(activated(int)), this, SLOT(onChangeInputInverserOrder(int)));
     connect(editPreprocessMpyC0, SIGNAL(textChanged(const QString &)), this, SLOT(onChangePreprocessMpyC0(const QString &)));
     connect(editPreprocessMpyC1, SIGNAL(textChanged(const QString &)), this, SLOT(onChangePreprocessMpyC1(const QString &)));
@@ -404,7 +404,7 @@ void inference_control::saveConfig()
         fileOutput << editServerHost->text() << endl;
         fileOutput << editServerPort->text() << endl;
         fileOutput << lastModelFile1 << endl;
-        fileOutput << lastModelFile2 << endl;
+        //fileOutput << lastModelFile2 << endl;
         fileOutput << lastDimH << endl;
         fileOutput << lastDimW << endl;
         fileOutput << lastInverseInputChannelOrder << endl;
@@ -435,7 +435,7 @@ void inference_control::loadConfig()
             editServerHost->setText(fileInput.readLine());
             editServerPort->setText(fileInput.readLine());
             editModelFile1->setText(fileInput.readLine());
-            editModelFile2->setText(fileInput.readLine());
+            //editModelFile2->setText(fileInput.readLine());
             editDimH->setText(fileInput.readLine());
             editDimW->setText(fileInput.readLine());
             comboInvertInputChannels->setCurrentIndex(fileInput.readLine().toInt());
@@ -469,7 +469,7 @@ void inference_control::loadConfig()
     lastDimW = editDimW->text();
     lastDimH = editDimH->text();
     lastModelFile1 = editModelFile1->text();
-    lastModelFile2 = editModelFile2->text();
+    //lastModelFile2 = editModelFile2->text();
     lastInverseInputChannelOrder = comboInvertInputChannels->currentIndex();
     lastPublishMode = comboPublishOptions->currentIndex();
     lastModelName = editModelName->text();
@@ -486,11 +486,11 @@ bool inference_control::isConfigValid(QPushButton * button, QString& err)
                 editModelFile1->setFocus();
                 return false;
             }
-            if(!QFileInfo(editModelFile2->text()).isFile()) {
+            /*if(!QFileInfo(editModelFile2->text()).isFile()) {
                 err = typeModelFile2Label[comboModelSelect->currentIndex()] + editModelFile2->text() + " file doesn't exist.";
                 editModelFile2->setFocus();
                 return false;
-            }
+            }*/
             if(editDimW->text().toInt() <= 0) { err = "Dimensions: width must be positive."; editDimW->setFocus(); return false; }
             if(editDimH->text().toInt() <= 0) { err = "Dimensions: height must be positive."; editDimH->setFocus(); return false; }
             if((comboPublishOptions->currentIndex() >= 1) && (editModelName->text().length() < 4)) {
@@ -522,7 +522,7 @@ void inference_control::modelSelect(int model)
         editDimW->setDisabled(false);
         editDimH->setDisabled(false);
         // model file selection
-        if(connectionSuccessful && editModelFile1->text().length() > 0 && editModelFile2->text().length() > 0) {
+        if(connectionSuccessful && editModelFile1->text().length() > 0) {
             buttonCompile->setEnabled(true);
             buttonCompile->setStyleSheet("font-weight: bold; color: darkblue; background-color: lightblue;");
         }
@@ -535,11 +535,12 @@ void inference_control::modelSelect(int model)
             editModelFile1->setText(lastModelFile1);
         editModelFile1->setEnabled(true);
         buttonModelFile1->setEnabled(true);
-        labelModelFile2->setText(typeModelFile2Label[model]);
+        /*labelModelFile2->setText(typeModelFile2Label[model]);
         if(editModelFile2->text() != lastModelFile2)
             editModelFile2->setText(lastModelFile2);
         editModelFile2->setEnabled(true);
         buttonModelFile2->setEnabled(true);
+        */
         comboInvertInputChannels->setDisabled(false);
         if(comboInvertInputChannels->currentIndex() != lastInverseInputChannelOrder)
             comboInvertInputChannels->setCurrentIndex(lastInverseInputChannelOrder);
@@ -597,10 +598,11 @@ void inference_control::modelSelect(int model)
         editModelFile1->setEnabled(false);
         editModelFile1->setText("");
         buttonModelFile1->setEnabled(false);
-        labelModelFile2->setText("--");
+        /*labelModelFile2->setText("--");
         editModelFile2->setEnabled(false);
         editModelFile2->setText("");
         buttonModelFile2->setEnabled(false);
+        */
         buttonCompile->setEnabled(false);
         buttonCompile->setStyleSheet("font-weight: normal; color: gray;");
         comboInvertInputChannels->setDisabled(true);
@@ -685,7 +687,7 @@ void inference_control::onChangeModelFile1(const QString & text)
         modelSelect(comboModelSelect->currentIndex());
     }
 }
-
+/*
 void inference_control::onChangeModelFile2(const QString & text)
 {
     if(comboModelSelect->currentIndex() < numModelTypes) {
@@ -693,7 +695,7 @@ void inference_control::onChangeModelFile2(const QString & text)
         modelSelect(comboModelSelect->currentIndex());
     }
 }
-
+*/
 void inference_control::onChangeInputInverserOrder(int order)
 {
     if(comboModelSelect->currentIndex() < numModelTypes) {
@@ -775,6 +777,7 @@ void inference_control::browseModelFile1()
     }
 }
 
+/*
 void inference_control::browseModelFile2()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), nullptr, typeModelFile2Desc[modelType]);
@@ -783,7 +786,7 @@ void inference_control::browseModelFile2()
         modelSelect(comboModelSelect->currentIndex());
     }
 }
-
+*/
 void inference_control::browseShadowFolder()
 {
 
@@ -955,7 +958,7 @@ void inference_control::runCompiler()
                 3,
                 editDimH->text().toInt(),
                 editDimW->text().toInt(),
-                editModelFile1->text(), editModelFile2->text(),
+                editModelFile1->text(),
                 comboInvertInputChannels->currentIndex(),
                 preprocessMpy, preprocessAdd,
                 options,

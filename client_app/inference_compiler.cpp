@@ -42,7 +42,7 @@ inference_model_uploader::inference_model_uploader(
     dimH = h;
     dimW = w;
     modelFile1 = modelFile1_;
-    modelFile2 = modelFile2_;
+    //modelFile2 = modelFile2_;
     reverseInputChannelOrder = reverseInputChannelOrder_;
     preprocessMpy[0] = preprocessMpy_[0];
     preprocessMpy[1] = preprocessMpy_[1];
@@ -104,12 +104,13 @@ void inference_model_uploader::run()
                         break;
                     }
                 }
+                /*
                 else if(cmd.command == INFCOM_CMD_SEND_MODELFILE2) {
                     if(!connection->sendFile(INFCOM_CMD_SEND_MODELFILE2, modelFile2, progress->modelFile2UploadProgress, progress->message, abortRequested)) {
                         progress->errorCode = -2;
                         break;
                     }
-                }
+                }*/
                 else if(cmd.command == INFCOM_CMD_COMPILER_STATUS) {
                     connection->sendCmd(cmd);
                     progress->completed = (cmd.data[0] != 0) ? true : false;
@@ -144,7 +145,7 @@ void inference_model_uploader::run()
         while(!abortRequested) {
            counter++;
            progress->modelFile1UploadProgress = 1.0/counter;
-           progress->modelFile2UploadProgress = counter/16.0;
+           //progress->modelFile2UploadProgress = counter/16.0;
            progress->compilationProgress = counter;
            progress->message.sprintf("Message 101 with tick at %d", counter);
            if(counter == 600) {
@@ -183,7 +184,7 @@ inference_compiler::inference_compiler(
         bool enableServer_,
         QString serverHost_, int serverPort_,
         int c, int h, int w,
-        QString modelFile1_, QString modelFile2_,
+        QString modelFile1_,
         int reverseInputChannelOrder_,
         float preprocessMpy_[3],
         float preprocessAdd_[3],
@@ -201,7 +202,7 @@ inference_compiler::inference_compiler(
     dimH = h;
     dimW = w;
     modelFile1 = modelFile1_;
-    modelFile2 = modelFile2_;
+    //modelFile2 = modelFile2_;
     reverseInputChannelOrder = reverseInputChannelOrder_;
     preprocessMpy[0] = preprocessMpy_[0];
     preprocessMpy[1] = preprocessMpy_[1];
@@ -265,16 +266,16 @@ inference_compiler::inference_compiler(
 
     labelStatus = new QLabel("Progress:");
     editModelFile1UploadProgress = new QLineEdit("");
-    editModelFile2UploadProgress = new QLineEdit("");
+    //editModelFile2UploadProgress = new QLineEdit("");
     editCompilerProgress = new QLineEdit("");
     editModelFile1UploadProgress->setEnabled(false);
-    editModelFile2UploadProgress->setEnabled(false);
+    // editModelFile2UploadProgress->setEnabled(false);
     editCompilerProgress->setEnabled(false);
     labelStatus->setStyleSheet("font-weight: bold; font-style: italic");
     labelStatus->setAlignment(Qt::AlignLeft);
     controlLayout->addWidget(labelStatus, row, 0, 1, 1);
     controlLayout->addWidget(editModelFile1UploadProgress, row, 1, 1, 1);
-    controlLayout->addWidget(editModelFile2UploadProgress, row, 2, 1, 1);
+    //controlLayout->addWidget(editModelFile2UploadProgress, row, 2, 1, 1);
     controlLayout->addWidget(editCompilerProgress, row, 3, 1, 1);
     row++;
 
@@ -359,7 +360,7 @@ void inference_compiler::tick()
     }
     QString text;
     editModelFile1UploadProgress->setText(text.sprintf("%d%%", progress->modelFile1UploadProgress));
-    editModelFile2UploadProgress->setText(text.sprintf("%d%%", progress->modelFile2UploadProgress));
+    //editModelFile2UploadProgress->setText(text.sprintf("%d%%", progress->modelFile2UploadProgress));
     editCompilerProgress->setText(text.sprintf("%d%%", progress->compilationProgress));
     editOutDimW->setText(text.sprintf("%d", progress->dimOutput[0]));
     editOutDimH->setText(text.sprintf("%d", progress->dimOutput[1]));
