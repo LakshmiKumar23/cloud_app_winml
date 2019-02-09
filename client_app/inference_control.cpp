@@ -123,10 +123,8 @@ inference_control::inference_control(int operationMode_, QWidget *parent)
     //////////////
     /// \brief labelCompiler
     ///
-    typeModelFile1Label.push_back("Prototxt:");
-    typeModelFile2Label.push_back("CaffeModel:");
-    typeModelFile1Desc.push_back("Prototxt (*.prototxt)");
-    typeModelFile2Desc.push_back("CaffeModel (*.caffemodel)");
+    typeModelFile1Label.push_back("ONNX_Model:");
+    typeModelFile1Desc.push_back("ONNX_Model (*.onnx)");
     numModelTypes++;
     QLabel * labelCompiler = new QLabel("Inference Compiler");
     labelCompiler->setStyleSheet("font-weight: bold; color: red; font-size: 18pt;");
@@ -135,7 +133,7 @@ inference_control::inference_control(int operationMode_, QWidget *parent)
     QLabel * labelModel = new QLabel("CNN Model:");
     comboModelSelect = new QComboBox();
     buttonCompile = new QPushButton(tr("Upload && Compile"), this);
-    comboModelSelect->addItem("Upload a pre-trained Caffe model (i.e., .prototxt and .caffemodel)");
+    comboModelSelect->addItem("Upload a pre-trained ONNX model (i.e., .onnx)");
     labelModel->setStyleSheet("font-weight: bold; font-style: italic; font-size: 15pt;");
     labelModel->setAlignment(Qt::AlignLeft);
     connect(comboModelSelect, SIGNAL(activated(int)), this, SLOT(modelSelect(int)));
@@ -183,6 +181,7 @@ inference_control::inference_control(int operationMode_, QWidget *parent)
     controlLayout->addWidget(editModelFile1, row, 1, 1, editSpan);
     controlLayout->addWidget(buttonModelFile1, row, 1 + editSpan, 1, 1);
     row++;
+    /*
     labelModelFile2 = new QLabel("--");
     editModelFile2 = new QLineEdit("");
     buttonModelFile2 = new QPushButton(tr("Browse..."), this);
@@ -193,6 +192,7 @@ inference_control::inference_control(int operationMode_, QWidget *parent)
     controlLayout->addWidget(editModelFile2, row, 1, 1, editSpan);
     controlLayout->addWidget(buttonModelFile2, row, 1 + editSpan, 1, 1);
     row++;
+    */
     labelPreprocessMpy = new QLabel("Preprocess(mpy):");
     labelPreprocessMpy->setStyleSheet("font-weight: bold; font-style: italic; font-size: 15pt;");
     labelPreprocessMpy->setAlignment(Qt::AlignLeft);

@@ -104,13 +104,12 @@ void inference_model_uploader::run()
                         break;
                     }
                 }
-                /* commented because only one model file - LK
                 else if(cmd.command == INFCOM_CMD_SEND_MODELFILE2) {
                     if(!connection->sendFile(INFCOM_CMD_SEND_MODELFILE2, modelFile2, progress->modelFile2UploadProgress, progress->message, abortRequested)) {
                         progress->errorCode = -2;
                         break;
                     }
-                }*/
+                }
                 else if(cmd.command == INFCOM_CMD_COMPILER_STATUS) {
                     connection->sendCmd(cmd);
                     progress->completed = (cmd.data[0] != 0) ? true : false;
